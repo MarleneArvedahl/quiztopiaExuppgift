@@ -1,0 +1,22 @@
+
+.formular {
+    display: flex;
+    flex-direction: column;
+
+    & .formLabel {
+        text-align: start;
+        margin: 2px;
+
+        & .formInput {
+            padding: 3px;
+        }
+    }
+
+    & .createAccountButton {
+        margin: 3px;
+    }
+
+    & .loginButton {
+        margin: 3px;
+    }
+}
