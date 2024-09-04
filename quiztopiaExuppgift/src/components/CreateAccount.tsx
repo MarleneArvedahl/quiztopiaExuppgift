@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import './CreateAccount.css'
-import SecretTunnel from "./SecretTunnel";
+import { useNavigate } from 'react-router-dom';
+
 
 type User = {
     username: string;
@@ -10,10 +11,10 @@ type User = {
 export default function CreateAccount() {
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
-    const [showSecret, setShowSecret] = useState<boolean>(false);
-    console.log("showSecret", showSecret)
-    
 
+    const navigate = useNavigate();
+    
+//För att skapa konto
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault(); // förhindra att formuläret laddar om sidan
 
@@ -27,6 +28,7 @@ export default function CreateAccount() {
                 },
                 body: JSON.stringify(userData)
             });
+        
             if (!response.ok) {
                 throw new Error('Något gick inte bra');
             }
@@ -37,9 +39,10 @@ export default function CreateAccount() {
         }
     }
 
-
+//För att logga in
     const handleSubmitLogIn = async (event: React.FormEvent) => {
         event.preventDefault(); // förhindra att formuläret laddar om sidan
+        const token = sessionStorage.getItem('token')
 
 
         const userData: User = {username, password};
@@ -47,7 +50,9 @@ export default function CreateAccount() {
             const response = await fetch('https://fk7zu3f4gj.execute-api.eu-north-1.amazonaws.com/auth/login', {
                 method: 'POST', 
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': token? `Bearer ${token}` : ' ',
+                    
                 },
                 body: JSON.stringify(userData)
             });
@@ -60,18 +65,16 @@ export default function CreateAccount() {
             sessionStorage.setItem('token', data.token);
                 let tokenKey = sessionStorage.getItem('token');
                 console.log(tokenKey);
-                if (tokenKey) {
-                    setShowSecret(true)
-                    console.log(showSecret) //OBS! varför visar denna false??
-                }
+                
 
         } catch (error: any) {
             console.error(error);
         }
         
+        navigate('/skapaquiz');
     }
 
-    
+
 
 
 
@@ -95,9 +98,7 @@ export default function CreateAccount() {
         </label>
         <button className="createAccountButton" type="submit">Skapa konto</button>
         <button className="loginButton" onClick={handleSubmitLogIn}>Logga in</button>
-        {
-                showSecret ? <SecretTunnel /> : null
-            }
+
     </form>
   )
 }

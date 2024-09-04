@@ -1,0 +1,9 @@
+
+
+.createQuizLabel {
+    margin: 8px;
+
+    & .createQuizInput {
+        margin: 2px;
+    }
+}

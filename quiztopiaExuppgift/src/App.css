@@ -40,3 +40,10 @@
 .read-the-docs {
   color: #888;
 }
+
+
+.heading {
+  & h1 {
+    color: rgb(222, 50, 150);
+  }
+}

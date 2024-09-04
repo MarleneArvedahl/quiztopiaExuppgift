@@ -3,6 +3,8 @@ import './LeafletMap.css';
 import leaflet, { Map } from 'leaflet';
 import { useState, useEffect } from 'react';
 
+
+
 function LeafletMap() {
   const [position, setPosition] = useState<GeolocationCoordinates>();
   const [map, setMap] = useState<Map>();
@@ -43,33 +45,33 @@ function LeafletMap() {
     }
   }, [map]);
 
-  useEffect(() => {
-    if (map) {
-      async function getNearbyStops() {
-        const response = await fetch(
-          `https://api.resrobot.se/v2.1/location.nearbystops?originCoordLat=${
-            position?.latitude
-          }&originCoordLong=${position?.longitude}&format=json&accessId=${
-            import.meta.env.VITE_API_KEY
-          }`
-        );
-        const { stopLocationOrCoordLocation } = await response.json();
+//   useEffect(() => {
+//     if (map) {
+//       async function getNearbyStops() {
+//         const response = await fetch(
+//           `https://api.resrobot.se/v2.1/location.nearbystops?originCoordLat=${
+//             position?.latitude
+//           }&originCoordLong=${position?.longitude}&format=json&accessId=${
+//             import.meta.env.VITE_API_KEY
+//           }`
+//         );
+//         const { stopLocationOrCoordLocation } = await response.json();
 
-        stopLocationOrCoordLocation.forEach((stop: Stop) => {
-          if (map) {
-            const marker = leaflet
-              .marker([stop.StopLocation.lat, stop.StopLocation.lon])
-              .addTo(map);
+//         stopLocationOrCoordLocation.forEach((stop: any) => {
+//           if (map) {
+//             const marker = leaflet
+//               .marker([stop.StopLocation.lat, stop.StopLocation.lon])
+//               .addTo(map);
 
-            marker.bindPopup(`${stop.StopLocation.name}`);
-          }
+//             marker.bindPopup(`${stop.StopLocation.name}`);
+//           }
 
-        });
-      }
+//         });
+//       }
 
-      getNearbyStops();
-    }
-  }, [map]);
+//       getNearbyStops();
+//     }
+//   }, [map]);
 
   return (
     <>

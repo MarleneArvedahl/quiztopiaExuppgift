@@ -8,7 +8,7 @@ function App() {
   
   return (
     <>
-      <header>
+      <header className='heading'>
         <h1>Quiztopia</h1>
       </header>
       <RouterProvider router={ router } />
