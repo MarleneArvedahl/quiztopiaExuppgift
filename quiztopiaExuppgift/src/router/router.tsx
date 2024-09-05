@@ -1,6 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
 import Login from '../pages/Login/Login';
-import ChooseQuiz from '../pages/ChooseQuiz/ChooseQuiz';
+import CreateQuestion from '../pages/CreateQuestion/CreateQuestion';
 import Map from '../pages/Map/Map';
 import CreateQuiz from '../pages/CreateQuiz/CreateQuiz';
 import AllQuiz from '../pages/AllQuiz/AllQuiz';
@@ -15,8 +15,8 @@ const router = createBrowserRouter([
         element: <CreateQuiz />
     },
     {
-        path: '/visafråga',
-        element: <ChooseQuiz />
+        path: '/skapafråga',
+        element: <CreateQuestion />
     },
     {
         path: '/allaquiz',

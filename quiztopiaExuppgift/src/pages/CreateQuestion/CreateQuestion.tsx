@@ -1,13 +1,13 @@
-import ShowQuiz from "../../components/ShowQuiz/ShowQuiz"
+import CreateQuizQuestion from "../../components/ShowQuiz/CreateQuizQuestion"
 
-function ChooseQuiz() {
+function CreateQuestion() {
     return (
         // {
         //     loggedIn ? <article>Hej {firstname} {lastname} AKA {username}</article> : <p>Du är inte inloggad</p>
         //    }
-        <ShowQuiz />
+        <CreateQuizQuestion />
     )
 }
 
 
-export default ChooseQuiz
+export default CreateQuestion

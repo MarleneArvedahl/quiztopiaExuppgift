@@ -4,15 +4,14 @@ import { useNavigate } from 'react-router-dom';
 
 function CreateQuiz() {
     const [name, setName] = useState<string>('');
-    const token = sessionStorage.getItem('token')
-    const navigate = useNavigate()
+    const token = sessionStorage.getItem('token');
+    const navigate = useNavigate();
 
     const handleClick = async (event: React.FormEvent) => {
         event.preventDefault(); // förhindra att formuläret laddar om sidan
-        
+
         type QuestionName = {
-            name: string,
-            
+            name: string;
         };
 
         const questionData: QuestionName = { name };
@@ -23,24 +22,24 @@ function CreateQuiz() {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': token? `Bearer ${token}` : ' ',
-
+                        Authorization: token ? `Bearer ${token}` : ' ',
                     },
                     body: JSON.stringify(questionData),
-                    
                 }
             );
-            if (!response.ok) {
-                throw new Error('Något gick inte bra');
-            }
             const data = await response.json();
             console.log(data);
             // const quizId = (data.quizid) //tänkte sparat quizId för att kunna radera samma.
             // console.log(quizId)
+            if (!response.ok) {
+                console.error(response);
+                throw new Error('Något gick inte bra');
+            }
+            sessionStorage.setItem('quizId', data.quizId)
+            navigate('/skapafråga');
         } catch (error: any) {
             console.error(error);
         }
-        navigate('/visafråga');
     };
 
     return (
@@ -58,8 +57,8 @@ function CreateQuiz() {
                 ></input>
             </label>
             <button className='createQuizButton' onClick={handleClick}>
-                    Skapa Quiz
-                </button>
+                Skapa Quiz
+            </button>
         </>
     );
 }

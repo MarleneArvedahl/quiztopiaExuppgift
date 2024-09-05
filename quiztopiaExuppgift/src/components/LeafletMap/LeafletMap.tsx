@@ -1,20 +1,36 @@
 import 'leaflet/dist/leaflet.css';
 import './LeafletMap.css';
-import leaflet, { Map } from 'leaflet';
+import leaflet, { LatLng, Map } from 'leaflet';
 import { useState, useEffect } from 'react';
+import { Location, Question } from '../ShowQuiz/CreateQuizQuestion';
 
 
+type Props = {
+    onClickMap: (loc:Location) => void
+    questions: Question[]
+}
 
-function LeafletMap() {
+
+function LeafletMap(props: Props) {
   const [position, setPosition] = useState<GeolocationCoordinates>();
   const [map, setMap] = useState<Map>();
+  const [clickPosition, setClickPosition] = useState<LatLng | null>(null);
+const {questions} = props //samma sak som att skriva questions = props.questions (man använder då samma namn)
 
   function getPosition() {
     if ('geolocation' in navigator && !position?.latitude) {
       navigator.geolocation.getCurrentPosition((position) => {
+        console.log('position', position)
         setPosition(position.coords);
       });
     }
+  }
+  
+  function onClick(event:any) {
+    console.log('clicked on map', event)
+    props.onClickMap(event.latlng)
+    setClickPosition(event.latlng)
+    
   }
 
   useEffect(() => {
@@ -22,13 +38,13 @@ function LeafletMap() {
       getPosition();
     }
   }, []);
-
+  
   useEffect(() => {
     if (position?.latitude && !map) {
       const myMap = leaflet
-        .map('map')
-        .setView([position?.latitude, position?.longitude], 15);
-
+        .map('map') //lägg kartan i div 'map'
+        .setView([position?.latitude, position?.longitude], 15) //vart den skall zooma in
+        .on('click', onClick)
       setMap(myMap);
     }
   }, [position]);
@@ -45,33 +61,20 @@ function LeafletMap() {
     }
   }, [map]);
 
-//   useEffect(() => {
-//     if (map) {
-//       async function getNearbyStops() {
-//         const response = await fetch(
-//           `https://api.resrobot.se/v2.1/location.nearbystops?originCoordLat=${
-//             position?.latitude
-//           }&originCoordLong=${position?.longitude}&format=json&accessId=${
-//             import.meta.env.VITE_API_KEY
-//           }`
-//         );
-//         const { stopLocationOrCoordLocation } = await response.json();
+    useEffect(() => {
+        if(!map) return;
+        if (clickPosition) {
+            leaflet.marker([clickPosition.lat, clickPosition.lng]).addTo(map)
+        }
+        //testade att hårdkoda först för att sen gör den mer beroende på.
+        // leaflet.marker([58,12]).addTo(map).bindPopup('hej')
+        questions.forEach(question => {
+            const {longitude, latitude} = question.location
+            //+ gör att den konverterar sträng till siffra
+            leaflet.marker([+latitude, +longitude]).addTo(map).bindPopup(question.question)
+        })
+    }, [questions, map, clickPosition])
 
-//         stopLocationOrCoordLocation.forEach((stop: any) => {
-//           if (map) {
-//             const marker = leaflet
-//               .marker([stop.StopLocation.lat, stop.StopLocation.lon])
-//               .addTo(map);
-
-//             marker.bindPopup(`${stop.StopLocation.name}`);
-//           }
-
-//         });
-//       }
-
-//       getNearbyStops();
-//     }
-//   }, [map]);
 
   return (
     <>
