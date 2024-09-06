@@ -1,17 +1,11 @@
 import { useEffect, useState } from 'react';
 import './GetAllQuiz.css';
 import { useNavigate } from 'react-router-dom';
+import { Question } from '../ShowQuiz/CreateQuizQuestion';
 
-type Question = {
-    question: string,
-    answer: string,
-    location: {
-        latitude: string,
-        longitude: string,
-    }
-}
 
-type Quiz = {
+
+export type Quiz = {
     quizId: string,
     username: string,
     userId: string,
@@ -53,15 +47,15 @@ export default function GetAllQuiz() {
     console.log('quizzes', quizzes)
 
     function handleClick(quiz: Quiz) {
-        sessionStorage.setItem('userId', quiz.userId)
-        // navigate('/'); spara hela Quizobjektet i en ny sessionstorage, ny sida med leafletmap och quizarrayen jag hämtar från sessionstorage. 
+        sessionStorage.setItem('quiz', JSON.stringify(quiz))
+        navigate('/valtquiz'); 
     }
     
     return (
         <div>
             {
             quizzes.map((quiz) => (
-                <div className='quizCard'>
+                <div className='quizCard' key={`${quiz.quizId}-${quiz.userId}`}>
                     <header className='quizCard__header'>
                         <h2 className='quizCard__heading'>Quiz</h2>
                     </header>

@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import { LatLng } from 'leaflet';
 
 
-
 export type Location = {
     longitude: string;
     latitude: string;
@@ -26,6 +25,7 @@ function CreateQuizQuestion() {
     // console.log(question); //Visas två gånger pga react är i test mode.
     const token = sessionStorage.getItem('token');
     const quizId = sessionStorage.getItem('quizId') ?? '';
+    const navigate = useNavigate();
 
     const handleClick = async (event: React.FormEvent) => {
         event.preventDefault(); // förhindra att formuläret laddar om sidan
@@ -72,7 +72,7 @@ function CreateQuizQuestion() {
     }
 
     function handleClickToQuizzes() {
-        const navigate = useNavigate();
+        
         navigate('/allaquiz');
     }
 

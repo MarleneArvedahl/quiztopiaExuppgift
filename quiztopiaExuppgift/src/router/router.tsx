@@ -1,9 +1,9 @@
 import { createBrowserRouter } from 'react-router-dom';
 import Login from '../pages/Login/Login';
 import CreateQuestion from '../pages/CreateQuestion/CreateQuestion';
-import Map from '../pages/Map/Map';
 import CreateQuiz from '../pages/CreateQuiz/CreateQuiz';
 import AllQuiz from '../pages/AllQuiz/AllQuiz';
+import SelectedQuiz from '../pages/SelectedQuiz/SelectedQuiz';
 
 const router = createBrowserRouter([
     {
@@ -23,8 +23,8 @@ const router = createBrowserRouter([
         element: <AllQuiz />
     },
     {
-        path: '/karta',
-        element: <Map />
+        path: '/valtquiz',
+        element: <SelectedQuiz />
     },
     
 ])

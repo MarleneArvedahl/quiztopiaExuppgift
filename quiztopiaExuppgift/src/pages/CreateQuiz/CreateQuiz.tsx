@@ -29,8 +29,7 @@ function CreateQuiz() {
             );
             const data = await response.json();
             console.log(data);
-            // const quizId = (data.quizid) //tänkte sparat quizId för att kunna radera samma.
-            // console.log(quizId)
+            
             if (!response.ok) {
                 console.error(response);
                 throw new Error('Något gick inte bra');
